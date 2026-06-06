@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "Areas - Casa do Construtor",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api-dev-oci.casadoconstrutor.com.br/api-booster"
+    },
+    {
+      "key": "idArea",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1 - Listar Áreas",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Tempo < 2s', () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test('Corpo não vazio', () => pm.expect(pm.response.text()).to.not.be.empty);",
+              "",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('idArea', json.data[0].idArea);",
+              "console.log('idArea capturado:', json.data[0].idArea);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/v1/areas"
+      }
+    },
+    {
+      "name": "2 - Detalhe da Área",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Tempo < 2s', () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test('Corpo não vazio', () => pm.expect(pm.response.text()).to.not.be.empty);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/v1/areas/{{idArea}}"
+      }
+    }
+  ]
+}
