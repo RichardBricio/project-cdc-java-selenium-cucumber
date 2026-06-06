@@ -22,7 +22,7 @@ public class ApiSteps {
                 .given()
                 .contentType("application/json")
                 .when()
-                .get(BASE_URL + "/areas");
+                .get(BASE_URL + "/v1/areas");
 
         TestUtils.logInfo("Status: " + response.getStatusCode());
         TestUtils.logInfo("Tempo: " + response.getTime() + "ms");
@@ -70,15 +70,7 @@ public class ApiSteps {
     @E("capturo o ID do primeiro item")
     public void capturarPrimeiroId() {
         try {
-            // Tenta capturar o ID (pode ser "id", "codigo", "identificador", etc.)
-            idCapturado = response.jsonPath().getString("[0].id");
-
-            if (idCapturado == null || idCapturado.isEmpty()) {
-                idCapturado = response.jsonPath().getString("[0].codigo");
-            }
-            if (idCapturado == null || idCapturado.isEmpty()) {
-                idCapturado = response.jsonPath().getString("[0].identificador");
-            }
+            idCapturado = response.jsonPath().getString("data[0].idArea");
 
             if (idCapturado == null || idCapturado.isEmpty()) {
                 TestUtils.logErro("❌ ID não encontrado no primeiro item");
@@ -103,7 +95,7 @@ public class ApiSteps {
                 .given()
                 .contentType("application/json")
                 .when()
-                .get(BASE_URL + "/areas/" + idCapturado);
+                .get(BASE_URL + "/v1/areas/" + idCapturado);
 
         TestUtils.logInfo("Status: " + response.getStatusCode());
         TestUtils.logInfo("Tempo: " + response.getTime() + "ms");
@@ -111,11 +103,7 @@ public class ApiSteps {
 
     @Então("o ID retornado deve ser igual ao ID capturado")
     public void validarIdCorrespondente() {
-        String idRetornado = response.jsonPath().getString("id");
-
-        if (idRetornado == null) {
-            idRetornado = response.jsonPath().getString("codigo");
-        }
+        String idRetornado = response.jsonPath().getString("data[0].idArea");
 
         if (idCapturado.equals(idRetornado)) {
             TestUtils.logSucesso("ID corresponde: " + idRetornado);

@@ -17,11 +17,6 @@ public class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    // ============ VERIFICAÇÕES DE EXISTÊNCIA/VISIBILIDADE ============
-
-    /**
-     * Verifica se o elemento EXISTE no DOM (pode estar invisível)
-     */
     public boolean existeElemento(WebElement elemento) {
         try {
             return elemento != null && elemento.isEnabled();
@@ -30,9 +25,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se o elemento está VISÍVEL (existe E está display:true)
-     */
     public boolean isVisivel(WebElement elemento) {
         try {
             return elemento.isDisplayed();
@@ -41,9 +33,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se o elemento está visível COM TIMEOUT personalizado
-     */
     public boolean isVisivel(WebElement elemento, int timeoutSegundos) {
         try {
             WebDriverWait waitPersonalizado = new WebDriverWait(driver, Duration.ofSeconds(timeoutSegundos));
@@ -54,9 +43,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se o elemento está clicável
-     */
     public boolean isClicavel(WebElement elemento) {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(elemento));
@@ -66,9 +52,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se o elemento está habilitado
-     */
     public boolean isHabilitado(WebElement elemento) {
         try {
             return elemento.isEnabled();
@@ -77,9 +60,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se o elemento está selecionado (checkbox/radio)
-     */
     public boolean isSelecionado(WebElement elemento) {
         try {
             return elemento.isSelected();
@@ -88,9 +68,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se uma lista NÃO está vazia e o elemento na posição existe
-     */
     public boolean existeElementoNaLista(List<WebElement> lista, int posicao) {
         try {
             if (lista == null || lista.isEmpty()) {
@@ -105,16 +82,10 @@ public class BasePage {
         }
     }
 
-    /**
-     * Verifica se a lista está vazia
-     */
     public boolean isListaVazia(List<WebElement> lista) {
         return lista == null || lista.isEmpty();
     }
 
-    /**
-     * Obtém elemento da lista com segurança (retorna null se não existir)
-     */
     public WebElement getElementoSeguro(List<WebElement> lista, int posicao) {
         if (existeElementoNaLista(lista, posicao)) {
             return lista.get(posicao);
@@ -122,16 +93,10 @@ public class BasePage {
         return null;
     }
 
-    /**
-     * Aguarda o elemento ficar visível (lança exceção se timeout)
-     */
     public WebElement aguardarVisibilidade(WebElement elemento) {
         return wait.until(ExpectedConditions.visibilityOf(elemento));
     }
 
-    /**
-     * Aguarda o elemento ficar visível com mensagem personalizada
-     */
     public WebElement aguardarVisibilidade(WebElement elemento, String mensagemErro) {
         return wait.withMessage(mensagemErro)
                 .until(ExpectedConditions.visibilityOf(elemento));

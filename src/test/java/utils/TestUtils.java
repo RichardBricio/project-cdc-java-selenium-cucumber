@@ -13,7 +13,6 @@ public class TestUtils {
     private Scenario scenario;
     private WebDriver driver;
 
-    // Construtor privado (Singleton)
     private TestUtils() {}
 
     // Método para inicializar (chamar UMA VEZ no @Before do Hooks)
