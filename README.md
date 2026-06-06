@@ -38,36 +38,41 @@ Collection.json de configuração para Postman anexado ao projeto para centraliz
 
 ## 📁 Estrutura do Projeto
 
-Directory structure:
-└── richardbricio-project-cdc-java-selenium-cucumber/
-    ├── README.md
-    ├── API_Collection_cdc.json
-    ├── pom.xml
-    └── src/
-        └── test/
-            ├── java/
-            │   ├── pages/
-            │   │   ├── BasePage.java
-            │   │   ├── BuscaProdutosPage.java
-            │   │   ├── HomePage.java
-            │   │   ├── LojaPage.java
-            │   │   └── ProdutoPage.java
-            │   ├── runners/
-            │   │   └── TestRunner.java
-            │   ├── steps/
-            │   │   ├── ApiSteps.java
-            │   │   ├── BuscaFiltrosSteps.java
-            │   │   ├── CaminhoFelizSteps.java
-            │   │   ├── CommonSteps.java
-            │   │   └── Hooks.java
-            │   └── utils/
-            │       └── TestUtils.java
-            └── resources/
-                ├── config.properties
-                └── features/
-                    ├── ApiBooster.feature
-                    ├── BuscaFiltros.feature
-                    └── CaminhoFeliz.feature
+project-cdc-java-selenium-cucumber/
+│
+├── README.md # Documentação do projeto
+├── API_Collection_cdc.json # Coleção Postman para testes de API
+├── pom.xml # Dependências e configurações Maven
+│
+└── src/
+└── test/
+├── java/
+│ ├── pages/ # Page Objects
+│ │ ├── BasePage.java # Classe base com waits e métodos comuns
+│ │ ├── BuscaProdutosPage.java # Resultados de busca
+│ │ ├── HomePage.java # Mapeamento da página inicial
+│ │ ├── LojaPage.java # Mapeamento da página de loja
+│ │ └── ProdutoPage.java # Página de detalhe do produto
+│ │
+│ ├── runners/ # Executores dos testes
+│ │ └── TestRunner.java # Runner principal com tags e plugins
+│ │
+│ ├── steps/ # Implementação dos steps Cucumber
+│ │ ├── ApiSteps.java # Steps para testes de API
+│ │ ├── BuscaFiltrosSteps.java # Steps de busca e filtros
+│ │ ├── CaminhoFelizSteps.java # Steps do fluxo principal
+│ │ ├── CommonSteps.java # Steps compartilhados
+│ │ └── Hooks.java # Setup/Teardown dos testes
+│ │
+│ └── utils/ # Utilitários
+│ └── TestUtils.java # Logs estruturados e screenshots
+│
+└── resources/
+├── config.properties # Configurações (URLs, timeouts)
+└── features/ # Feature files (cenários BDD)
+├── ApiBooster.feature # Cenários de API
+├── BuscaFiltros.feature # Cenários de busca e filtros
+└── CaminhoFeliz.feature # Cenários de fluxo principal
 
 ---
 
