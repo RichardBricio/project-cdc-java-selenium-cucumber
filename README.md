@@ -7,16 +7,12 @@ Collection.json de configuração para Postman anexado ao projeto para centraliz
 
 ## 📋 Índice
 
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Pré-requisitos](#pré-requisitos)
-- [Configuração Inicial](#configuração-inicial)
-- [Executando os Testes](#executando-os-testes)
-- [Executando Cenários Específicos](#executando-cenários-específicos)
-- [Relatórios e Evidências](#relatórios-e-evidências)
-- [Benefícios do Framework](#benefícios-do-framework)
-- [Possibilidades de Expansão](#possibilidades-de-expansão)
-- [Solução de Problemas](#solução-de-problemas)
+- Tecnologias Utilizadas
+- Estrutura do Projeto
+- Pré-requisitos
+- Relatórios e Evidências
+- Benefícios do Framework
+- Possibilidades de Expansão
 
 ---
 
@@ -65,16 +61,28 @@ Após cada execução, o framework gera automaticamente:
 2. Relatório JSON (target/cucumber-report.json)
 •Para integração com ferramentas de CI/CD
 
-3. Arquivo rerun (target/rerun.txt)
-•Lista de cenários que falharam
-•Permite reexecução apenas dos falhos
-
-4. Screenshots automáticos
+3. Screenshots automáticos
 •Capturados em cada passo importante
 •Incorporados ao relatório HTML
 •Nomeados com prefixo FALHA_ quando o cenário falha
 
 ##✨ Benefícios do Framework
+
+
+| Tecnologia | Benefício |
+|------------|-----------|
+| **BDD com Cucumber** | Cenários escritos em português, acessíveis para não-técnicos |
+| **Page Objects** | Manutenção facilitada e reaproveitamento de código |
+| **WebDriverManager** | Sem necessidade de baixar drivers manualmente |
+| **Screenshots automático** | Evidências visuais de cada passo |
+| **Logs estruturados** | Com emojis para fácil identificação de status |
+| **Configuração externalizada** | Mude URLs e timeouts sem recompilar |
+| **Auto-abertura do relatório** | Agilidade na análise dos resultados |
+| **Tratamento robusto de exceções** | Menos falsos negativos |
+| **Rest Assured** | Pronto para integração de testes API |
+| **Singleton Pattern** | Uso eficiente de recursos (WebDriver compartilhado) |
+| **Waits explícitos** | Testes mais estáveis e confiáveis |
+
 
 BDD com Cucumber	- Cenários escritos em português, acessíveis para não-técnicos
 Page Objects	- Manutenção facilitada e reaproveitamento de código
