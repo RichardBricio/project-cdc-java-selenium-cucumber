@@ -12,7 +12,7 @@ public class ApiSteps {
     private Response response;
     private String idCapturado;
 
-    // ==================== CONSULTA GERAL ====================
+    // Consulta geral
 
     @Quando("consulto a lista de áreas")
     public void consultarListaAreas() {
@@ -85,7 +85,7 @@ public class ApiSteps {
         }
     }
 
-    // ==================== CONSULTA ESPECÍFICA ====================
+    // Consulta Específica
 
     @Quando("consulto a área pelo ID capturado")
     public void consultarAreaPorId() {
@@ -113,7 +113,7 @@ public class ApiSteps {
         }
     }
 
-    // ==================== HEALTH CHECK ====================
+    // Health Check
 
     @Quando("consulto o health check")
     public void consultarHealthCheck() {

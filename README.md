@@ -1,6 +1,7 @@
 # 🏗️ CDC Test Automation Framework
 
 Framework de automação de testes para a **Casa do Construtor**, combinando testes **Web (UI)** com **Selenium WebDriver** e **Cucumber** para escrita de cenários em linguagem natural.
+
 Collection.json de configuração para Postman anexado ao projeto para centralizar informações.
 
 ---
