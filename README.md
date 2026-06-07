@@ -83,19 +83,6 @@ Após cada execução, o framework gera automaticamente:
 | **Singleton Pattern** | Uso eficiente de recursos (WebDriver compartilhado) |
 | **Waits explícitos** | Testes mais estáveis e confiáveis |
 
-
-BDD com Cucumber	- Cenários escritos em português, acessíveis para não-técnicos
-Page Objects	- Manutenção facilitada e reaproveitamento de código
-WebDriverManager	- Sem necessidade de baixar drivers manualmente
-Screenshots automáticos	- Evidências visuais de cada passo
-Logs estruturados	- Com emojis para fácil identificação de status
-Configuração externalizada	- Mude URLs e timeouts sem recompilar
-Auto-abertura do relatório	- Agilidade na análise dos resultados
-Tratamento robusto de exceções	- Menos falsos negativos
-Rest Assured - Pronto para integração de testes API
-Singleton Pattern	- Uso eficiente de recursos (WebDriver compartilhado)
-Waits explícitos	- Testes mais estáveis e confiáveis
-
 ##🔮 Possibilidades de Expansão
 O framework foi projetado para ser facilmente extensível.
 
