@@ -4,18 +4,20 @@ import drivers.DriverManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import utils.TestUtils;
 
 public class Hooks {
     private static int scenarioCounter = 0;
 
-    @Before("@web")
+    @Before("@Web")
     public void setUpWeb(Scenario scenario) {
         DriverManager.getWebDriver(); // Inicia a Web via Boni Garcia se tiver a tag @web
         configurarCenario(scenario);
     }
 
-    @Before("@desktop")
+    @Before("@Desktop")
     public void setUpDesktop(Scenario scenario) {
         DriverManager.getDesktopDriver(); // Inicia o Delphi via WinAppDriver se tiver a tag @desktop
         configurarCenario(scenario);
@@ -55,4 +57,25 @@ public class Hooks {
         // OBS: Se você preferir manter a sua lógica antiga de acumular cenários e fechar tudo só no final,
         // basta controlar o 'scenarioCounter' aqui e chamar o 'DriverManager.quitDrivers()' quando zerar.
     }
+
+    @After("@Desktop")
+    public void tearDownDesktop(Scenario cenario) {
+        System.out.println("🏁 Cenário '" + cenario.getName() + "' finalizado. Status: " + cenario.getStatus());
+
+        // 1. SE FALHOU, TIRA O PRINT PRIMEIRO (Enquanto o driver e o app ainda estão vivos)
+        if (cenario.isFailed()) {
+            try {
+                System.out.println("📸 Capturando print da falha...");
+                // Seu código atual que tira o print/embed aqui, ex:
+                 byte[] screenshot = ((TakesScreenshot) DriverManager.getDesktopDriver()).getScreenshotAs(OutputType.BYTES);
+                 cenario.attach(screenshot, "image/png", "FALHA_" + cenario.getName());
+            } catch (Exception e) {
+                System.out.println("⚠️ Não foi possível tirar o print: " + e.getMessage());
+            }
+        }
+
+        // 2. AGORA SIM, DEPOIS DO PRINT, LIMPA TUDO E MATA O PROCESSO
+        DriverManager.fecharDesktopDriver();
+    }
+
 }

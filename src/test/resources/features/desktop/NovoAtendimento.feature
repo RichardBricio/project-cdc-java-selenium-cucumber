@@ -9,4 +9,5 @@ Funcionalidade: Validar a abertura da tela 'Novo Atendimento' no CCL
 
   @Positivo
   Cenário: Acessar tela 'Novo Atendimento'
-    Quando acesso a tela "Novo atendimento"
+    Quando tento interagir com o aplicativo
+#    Quando acesso a tela "Novo atendimento"

@@ -15,6 +15,7 @@ import java.io.File;
         features = "src/test/resources/features/web",
         glue = {"steps"},
         tags = "@Web and (@CaminhoFeliz or @BuscaFiltros)",
+//        tags = "@CaminhoFeliz",
         plugin = {
                 "pretty",
                 "html:target/cucumber-report.html",

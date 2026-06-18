@@ -4,6 +4,7 @@
 Funcionalidade: Navegação feliz do cliente
 
   Contexto:
+    Dado que estou utilizando o navegador "Chrome"
     Dado que estou na home page da Casa do Construtor
     Quando defino a localização para "SP" e "Rio Claro"
     E defino que deve ser a loja "Av. Brasil"

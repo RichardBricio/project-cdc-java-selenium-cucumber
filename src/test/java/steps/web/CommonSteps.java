@@ -10,12 +10,22 @@ import drivers.DriverManager;
 import utils.TestUtils;
 
 public class CommonSteps {
-    private WebDriver driver = DriverManager.getWebDriver();
+    private WebDriver driver;
     private HomePage homePage;
     private LojaPage lojaPage;
 
+    @Dado("que estou utilizando o navegador {string}")
+    public void queEstouUtilizandoONavegador(String navegadorSelecionado) throws InterruptedException {
+        driver = DriverManager.getWebDriver(navegadorSelecionado);
+        TestUtils.screenshot("Navegador " + navegadorSelecionado + "aberto com sucesso");
+//        Thread.sleep(2000);
+    }
+
     @Dado("que estou na home page da Casa do Construtor")
     public void acessarHomePage() throws InterruptedException {
+        if (driver == null){
+            driver = DriverManager.getWebDriver();
+        }
         driver.get("https://casadoconstrutor.com.br/pt-br");
         homePage = new HomePage(driver);
         Thread.sleep(1000);

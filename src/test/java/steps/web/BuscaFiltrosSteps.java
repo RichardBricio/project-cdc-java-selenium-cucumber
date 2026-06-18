@@ -10,14 +10,18 @@ import drivers.DriverManager;
 import utils.TestUtils;
 
 public class BuscaFiltrosSteps {
-    private WebDriver driver = DriverManager.getWebDriver();
     private LojaPage lojaPage;
     private BuscaProdutosPage buscaPage;
 
+    private WebDriver driver() {
+        return DriverManager.getWebDriver();
+    }
+
     @Então("valido os resultados de produtos exibidos na grid")
     public void validarResultadosExibidos() throws InterruptedException {
-        buscaPage =  new BuscaProdutosPage(driver);
-        if (!buscaPage.existeElemento(buscaPage.getGridEquipamentosEncontrados().get(1))) {
+        buscaPage =  new BuscaProdutosPage(driver());
+//        if (!buscaPage.existeElemento(buscaPage.getGridEquipamentosEncontrados().get(1))) {
+        if (buscaPage.isListaVazia(buscaPage.getGridEquipamentosEncontrados())) {
             TestUtils.screenshot("Nenhum produto foi retornado!");
             Assert.fail("❌ Nenhum produto foi retornado!");
         } else {
@@ -28,7 +32,7 @@ public class BuscaFiltrosSteps {
 
     @Dado("que retorno ao campo de pesquisa e o limpo")
     public void limparBusca() throws InterruptedException {
-        lojaPage =  new LojaPage(driver);
+        lojaPage =  new LojaPage(driver());
         lojaPage.getBtnPesquisaEquipamento().click();
         Thread.sleep(1000);
         lojaPage.getTextPesquisaEquipamento().clear();
@@ -48,7 +52,7 @@ public class BuscaFiltrosSteps {
     @Então("valido mensagem de que nenhum resultado foi encontrado na busca")
     public void validarMensagemNenhumResultado() {
         String mensagem = "Nenhum resultado foi encontrado na busca";
-        if (!driver.findElement(By.xpath("//*[@id=\"block-cdc-theme-formularioexpostobusca-de-equipamentosblock-1\"]/div/div[2]/div[1]/ul/li")).getText().equals(mensagem)) {
+        if (!driver().findElement(By.xpath("//*[@id=\"block-cdc-theme-formularioexpostobusca-de-equipamentosblock-1\"]/div/div[2]/div[1]/ul/li")).getText().equals(mensagem)) {
             TestUtils.screenshot("Mensagem que não foi encontrado produto buscado está divergênte!");
             Assert.fail("❌ Mensagem encontrada: " + lojaPage.getListaEquipamentos().get(0).getText());
         } else {
