@@ -6,11 +6,15 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
+import java.io.FileInputStream;
+import java.util.Properties;
+
 public class TestUtils {
 
     // Instância única
     private static TestUtils instance;
     private Scenario scenario;
+    private static Properties properties;
 
     private TestUtils() {}
 
@@ -53,6 +57,7 @@ public class TestUtils {
                 try {
                     byte[] screenshot = ((TakesScreenshot) driverAtivo).getScreenshotAs(OutputType.BYTES);
                     instance.scenario.attach(screenshot, "image/png", nome);
+                    instance.scenario.log("📸 Evidência: " + nome);
                 } catch (Exception e) {
                     System.err.println("Erro ao capturar screenshot: " + e.getMessage());
                 }
@@ -70,4 +75,18 @@ public class TestUtils {
     public static void cleanup() {
         instance = null;
     }
+
+    public static String getPropriedade(String chave) {
+        if (properties == null) {
+            try {
+                properties = new Properties();
+                FileInputStream file = new FileInputStream("src/test/resources/config.properties");
+                properties.load(file);
+            } catch (Exception e) {
+                throw new RuntimeException("Não foi possível ler o arquivo de configuração: " + e.getMessage());
+            }
+        }
+        return properties.getProperty(chave);
+    }
+
 }

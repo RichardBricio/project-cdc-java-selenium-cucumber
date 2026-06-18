@@ -17,8 +17,7 @@ public class CommonSteps {
     @Dado("que estou utilizando o navegador {string}")
     public void queEstouUtilizandoONavegador(String navegadorSelecionado) throws InterruptedException {
         driver = DriverManager.getWebDriver(navegadorSelecionado);
-        TestUtils.screenshot("Navegador " + navegadorSelecionado + "aberto com sucesso");
-//        Thread.sleep(2000);
+        TestUtils.logSucesso("Navegador " + navegadorSelecionado + "aberto com sucesso");
     }
 
     @Dado("que estou na home page da Casa do Construtor")
@@ -26,9 +25,9 @@ public class CommonSteps {
         if (driver == null){
             driver = DriverManager.getWebDriver();
         }
-        driver.get("https://casadoconstrutor.com.br/pt-br");
+        driver.get(TestUtils.getPropriedade("app.url"));
         homePage = new HomePage(driver);
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         TestUtils.screenshot("Acessou com sucesso na home page");
     }
 
@@ -46,7 +45,7 @@ public class CommonSteps {
         for(WebElement item : homePage.getListaBuscaCidadePopup()) {
             if(item.getText().contains(loja)) {
                 item.click();
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 TestUtils.screenshot("Loja selecionada e acessada com sucesso");
                 break;
             }
