@@ -1,15 +1,16 @@
-package steps;
+package steps.web;
 
 import io.cucumber.java.pt.*;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import pages.HomePage;
-import pages.LojaPage;
+import pages.web.HomePage;
+import pages.web.LojaPage;
+import drivers.DriverManager;
 import utils.TestUtils;
 
 public class CommonSteps {
-    private WebDriver driver = Hooks.driver;
+    private WebDriver driver = DriverManager.getWebDriver();
     private HomePage homePage;
     private LojaPage lojaPage;
 

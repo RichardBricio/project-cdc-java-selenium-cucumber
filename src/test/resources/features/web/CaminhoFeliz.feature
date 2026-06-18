@@ -1,4 +1,5 @@
 # language: pt
+@Web
 @CaminhoFeliz
 Funcionalidade: Navegação feliz do cliente
 

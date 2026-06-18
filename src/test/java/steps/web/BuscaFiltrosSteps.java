@@ -1,15 +1,16 @@
-package steps;
+package steps.web;
 
 import io.cucumber.java.pt.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import pages.BuscaProdutosPage;
-import pages.LojaPage;
+import pages.web.BuscaProdutosPage;
+import pages.web.LojaPage;
+import drivers.DriverManager;
 import utils.TestUtils;
 
 public class BuscaFiltrosSteps {
-    private WebDriver driver = Hooks.driver;
+    private WebDriver driver = DriverManager.getWebDriver();
     private LojaPage lojaPage;
     private BuscaProdutosPage buscaPage;
 

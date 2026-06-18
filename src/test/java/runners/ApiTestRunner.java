@@ -12,13 +12,9 @@ import java.io.File;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features",
+        features = "src/test/resources/features/api",
         glue = {"steps"},
-//        tags = "@CaminhoFeliz",
-//        tags = "@BuscaFiltros",
-//        tags = "@Api",
-        tags = "@CaminhoFeliz or @BuscaFiltros",
-//        tags = "@CaminhoFeliz or @BuscaFiltros or @Api",
+        tags = "@Api",
         plugin = {
                 "pretty",
                 "html:target/cucumber-report.html",
@@ -28,10 +24,10 @@ import java.io.File;
         monochrome = true
 )
 
-public class TestRunner {
+public class ApiTestRunner {
 
         public static void main(String[] args) {
-                Result result = JUnitCore.runClasses(TestRunner.class);
+                Result result = JUnitCore.runClasses(ApiTestRunner.class);
 
                 // Resumo no console
                 System.out.println("\n📊 Total de testes: " + result.getRunCount());

@@ -1,10 +1,14 @@
-package steps;
+package steps.api;
 
 import io.cucumber.java.pt.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.TestUtils;
+import drivers.DriverManager;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 public class ApiSteps {
 
@@ -12,14 +16,39 @@ public class ApiSteps {
     private Response response;
     private String idCapturado;
 
-    // Consulta geral
+    @Dado("que eu configure a API para o ambiente de testes")
+    public void queEuConfigureAApiParaOAmbienteDeTestes() {
+        // Define a URL base da sua API Delphi ou servidor de testes
+        DriverManager.getApiDriver("https://api.casadoconstrutor.com.br/v1");
+    }
 
+    @Quando("envio uma requisição GET para o endpoint {string}")
+    public void envioUmaRequisiçãoGETParaOEndpoint(String endpoint) {
+        // Dispara o GET e armazena o JSON de retorno na variável 'resposta'
+        this.response = given()
+                .header("Content-Type", "application/json")
+                .when()
+                .get(endpoint);
+    }
+
+    @Então("o status code da resposta deve ser {int}")
+    public void oStatusCodeDaRespostaDeveSer(Integer statusCodeEsperado) {
+        // Valida se o servidor respondeu com 200 OK, 201 Created, etc.
+        response.then().statusCode(statusCodeEsperado);
+    }
+
+    @Então("o campo {string} deve retornar {string}")
+    public void oCampoDeveRetornar(String caminhoCampo, String valorEsperado) {
+        // Valida o conteúdo de dentro do JSON retornado
+        response.then().body(caminhoCampo, equalTo(valorEsperado));
+    }
+
+    // Consulta geral
     @Quando("consulto a lista de áreas")
     public void consultarListaAreas() {
         TestUtils.logInfo("Consultando lista de áreas...");
 
-        response = RestAssured
-                .given()
+        response = given()
                 .contentType("application/json")
                 .when()
                 .get(BASE_URL + "/v1/areas");
@@ -91,8 +120,7 @@ public class ApiSteps {
     public void consultarAreaPorId() {
         TestUtils.logInfo("Consultando área ID: " + idCapturado);
 
-        response = RestAssured
-                .given()
+        response = given()
                 .contentType("application/json")
                 .when()
                 .get(BASE_URL + "/v1/areas/" + idCapturado);
@@ -119,8 +147,7 @@ public class ApiSteps {
     public void consultarHealthCheck() {
         TestUtils.logInfo("Consultando health check...");
 
-        response = RestAssured
-                .given()
+        response = given()
                 .contentType("application/json")
                 .when()
                 .get(BASE_URL + "/actuator/health");

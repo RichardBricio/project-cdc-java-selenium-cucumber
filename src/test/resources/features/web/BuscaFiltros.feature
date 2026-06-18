@@ -1,4 +1,5 @@
 # language: pt
+@Web
 @BuscaFiltros
 Funcionalidade: Validação do motor de busca e filtros
 

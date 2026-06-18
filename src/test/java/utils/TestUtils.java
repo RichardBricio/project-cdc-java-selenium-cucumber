@@ -1,61 +1,62 @@
 package utils;
 
+import drivers.DriverManager; // <-- Importamos o seu novo gerenciador
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import steps.Hooks;
 
 public class TestUtils {
 
     // Instância única
     private static TestUtils instance;
     private Scenario scenario;
-    private WebDriver driver;
 
     private TestUtils() {}
 
-    // Método para inicializar (chamar UMA VEZ no @Before do Hooks)
+    // Método para inicializar (chamado UMA VEZ no @Before do Hooks)
     public static void init(Scenario scenario) {
         if (instance == null) {
             instance = new TestUtils();
         }
         instance.scenario = scenario;
-        instance.driver = Hooks.driver;
+        // Removemos a atribuição fixa do driver aqui!
     }
 
-    // Métodos de log SEM precisar passar parâmetros
+    // Métodos de log (Permanecem idênticos e limpos)
     public static void log(String mensagem) {
         if (instance != null && instance.scenario != null) {
             instance.scenario.log(mensagem);
         }
     }
 
-    public static void logPassou(String mensagem) {
-        log("✅ " + mensagem);
-    }
+    public static void logPassou(String mensagem) { log("✅ " + mensagem); }
+    public static void logErro(String mensagem) { log("❌ " + mensagem); }
+    public static void logInfo(String mensagem) { log("ℹ️ " + mensagem); }
+    public static void logAviso(String mensagem) { log("⚠️ " + mensagem); }
+    public static void logSucesso(String mensagem) { log("🎉 " + mensagem); }
 
-    public static void logErro(String mensagem) {
-        log("❌ " + mensagem);
-    }
-
-    public static void logInfo(String mensagem) {
-        log("ℹ️ " + mensagem);
-    }
-
-    public static void logAviso(String mensagem) {
-        log("⚠️ " + mensagem);
-    }
-
-    public static void logSucesso(String mensagem) {
-        log("🎉 " + mensagem);
-    }
-
-    // Screenshot SEM precisar passar parâmetros
+    // CORREÇÃO CRUCIAL: Captura de tela dinâmica (Web ou Desktop)
     public static void screenshot(String nome) {
-        if (instance != null && instance.driver != null && instance.scenario != null) {
-            byte[] screenshot = ((TakesScreenshot) instance.driver).getScreenshotAs(OutputType.BYTES);
-            instance.scenario.attach(screenshot, "image/png", nome);
+        if (instance != null && instance.scenario != null) {
+            WebDriver driverAtivo = null;
+
+            // Identifica qual driver está rodando no cenário atual
+            if ("WEB".equals(DriverManager.getTipoDriverAtivo())) {
+                driverAtivo = DriverManager.getWebDriver();
+            } else if ("DESKTOP".equals(DriverManager.getTipoDriverAtivo())) {
+                driverAtivo = DriverManager.getDesktopDriver();
+            }
+
+            // Se houver um driver ativo (seja Web ou Windows), tira o print
+            if (driverAtivo != null) {
+                try {
+                    byte[] screenshot = ((TakesScreenshot) driverAtivo).getScreenshotAs(OutputType.BYTES);
+                    instance.scenario.attach(screenshot, "image/png", nome);
+                } catch (Exception e) {
+                    System.err.println("Erro ao capturar screenshot: " + e.getMessage());
+                }
+            }
         }
     }
 

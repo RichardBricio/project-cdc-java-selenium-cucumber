@@ -1,15 +1,16 @@
-package steps;
+package steps.web;
 
 import io.cucumber.java.pt.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import pages.BuscaProdutosPage;
-import pages.ProdutoPage;
+import pages.web.BuscaProdutosPage;
+import pages.web.ProdutoPage;
+import drivers.DriverManager;
 import utils.TestUtils;
 
 public class CaminhoFelizSteps {
-    private WebDriver driver = Hooks.driver;
+    private WebDriver driver = DriverManager.getWebDriver();
     private BuscaProdutosPage buscaPage;
     private ProdutoPage produtoPage;
     private String nomeArmazenado;

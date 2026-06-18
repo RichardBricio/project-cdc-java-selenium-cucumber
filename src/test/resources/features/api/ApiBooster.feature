@@ -3,6 +3,7 @@
 Funcionalidade: Testes da API Booster
 
   Cenário: Consultar áreas e validar primeiro item
+    Dado que eu configure a API para o ambiente de testes
     Quando consulto a lista de áreas
     Então o status code deve ser 200
     E o tempo de resposta deve ser menor que 2 segundos
