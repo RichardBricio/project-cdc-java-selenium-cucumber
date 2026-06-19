@@ -57,7 +57,6 @@ public class TestUtils {
                 try {
                     byte[] screenshot = ((TakesScreenshot) driverAtivo).getScreenshotAs(OutputType.BYTES);
                     instance.scenario.attach(screenshot, "image/png", nome);
-                    instance.scenario.log("📸 Evidência: " + nome);
                 } catch (Exception e) {
                     System.err.println("Erro ao capturar screenshot: " + e.getMessage());
                 }

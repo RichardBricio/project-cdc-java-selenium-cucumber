@@ -2,24 +2,27 @@ package steps;
 
 import drivers.DriverManager;
 import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import utils.TestUtils;
 
+import java.awt.*;
+
 public class Hooks {
     private static int scenarioCounter = 0;
 
     @Before("@Web")
     public void setUpWeb(Scenario scenario) {
-        DriverManager.getWebDriver(); // Inicia a Web via Boni Garcia se tiver a tag @web
+//        DriverManager.getWebDriver(); // Inicia a Web via Boni Garcia se tiver a tag @web
         configurarCenario(scenario);
     }
 
     @Before("@Desktop")
     public void setUpDesktop(Scenario scenario) {
-        DriverManager.getDesktopDriver(); // Inicia o Delphi via WinAppDriver se tiver a tag @desktop
+//        DriverManager.getDesktopDriver(); // Inicia o Delphi via WinAppDriver se tiver a tag @desktop
         configurarCenario(scenario);
     }
 
@@ -67,8 +70,8 @@ public class Hooks {
             try {
                 System.out.println("📸 Capturando print da falha...");
                 // Seu código atual que tira o print/embed aqui, ex:
-                 byte[] screenshot = ((TakesScreenshot) DriverManager.getDesktopDriver()).getScreenshotAs(OutputType.BYTES);
-                 cenario.attach(screenshot, "image/png", "FALHA_" + cenario.getName());
+                byte[] screenshot = ((TakesScreenshot) DriverManager.getDesktopDriver()).getScreenshotAs(OutputType.BYTES);
+                cenario.attach(screenshot, "image/png", "FALHA_" + cenario.getName());
             } catch (Exception e) {
                 System.out.println("⚠️ Não foi possível tirar o print: " + e.getMessage());
             }
@@ -76,6 +79,14 @@ public class Hooks {
 
         // 2. AGORA SIM, DEPOIS DO PRINT, LIMPA TUDO E MATA O PROCESSO
         DriverManager.fecharDesktopDriver();
+    }
+
+    @AfterAll
+    public static void finalizarSuiteDeTestes() {
+        System.out.println("🏁 Todos os testes finalizados pelo Cucumber. Iniciando limpeza geral...");
+
+        // O quitDrivers vai fechar os navegadores abertos e passar o rodo no Appium/Node
+        DriverManager.quitDrivers();
     }
 
 }

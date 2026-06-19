@@ -5,6 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class BasePage {
@@ -13,7 +14,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 15);
+        this.wait = new WebDriverWait(driver, Duration.ofMillis(10000));
         PageFactory.initElements(driver, this);
     }
 
@@ -35,7 +36,7 @@ public class BasePage {
 
     public boolean isVisivel(WebElement elemento, int timeoutSegundos) {
         try {
-            WebDriverWait waitPersonalizado = new WebDriverWait(driver, timeoutSegundos);
+            WebDriverWait waitPersonalizado = new WebDriverWait(driver, Duration.ofMillis(15000));
             waitPersonalizado.until(ExpectedConditions.visibilityOf(elemento));
             return true;
         } catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {

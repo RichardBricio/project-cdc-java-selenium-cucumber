@@ -5,13 +5,15 @@ import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
+//import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import io.restassured.RestAssured;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class DriverManager {
@@ -26,7 +28,7 @@ public class DriverManager {
         if (webDriver == null) {
             WebDriverManager.chromedriver().setup(); // Boni Garcia isolado aqui
             webDriver = new ChromeDriver();
-            webDriver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000));
             webDriver.manage().window().maximize();
             tipoDriverAtivo = "WEB";
         }
@@ -59,7 +61,7 @@ public class DriverManager {
                             + ". Escolha entre: Chrome, Edge ou Firefox.");
             }
 
-            webDriver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000));
             webDriver.manage().window().maximize();
             tipoDriverAtivo = "WEB";
         }
@@ -73,15 +75,14 @@ public class DriverManager {
 
                 String caminhoApp = "C:\\Program Files\\Notepad++\\notepad++.exe";
 
-                DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("app", caminhoApp);
-                caps.setCapability("platformName", "Windows");
-                caps.setCapability("deviceName", "WindowsPC"); // Volta a funcionar nativamente
+                // 🎯 AJUSTE: Alterado para WindowsOptions (W3C Puro) para conversar com a nova versão
+                io.appium.java_client.windows.options.WindowsOptions options = new io.appium.java_client.windows.options.WindowsOptions();
+                options.setApp(caminhoApp);
 
                 System.out.println("🔌 Conectando ao WinAppDriver na versão estável...");
 
                 // Sem loops complexos, a conexão ocorre de primeira
-                desktopDriver = new WindowsDriver(new URL("http://127.0.0.1:4723"), caps);
+                desktopDriver = new WindowsDriver(new URL("http://127.0.0.1:4723"), options);
 
                 tipoDriverAtivo = "DESKTOP";
             } catch (Exception e) {
@@ -97,15 +98,14 @@ public class DriverManager {
             try {
                 iniciarWinAppDriverAutomaticamente();
 
-                DesiredCapabilities caps = new DesiredCapabilities();
-                caps.setCapability("app", caminhoApp);
-                caps.setCapability("platformName", "Windows");
-                caps.setCapability("deviceName", "WindowsPC"); // Volta a funcionar nativamente
+                // 🎯 AJUSTE: Aplicado o mesmo WindowsOptions seguro aqui no método por String
+                io.appium.java_client.windows.options.WindowsOptions options = new io.appium.java_client.windows.options.WindowsOptions();
+                options.setApp(caminhoApp);
 
                 System.out.println("🔌 Conectando ao WinAppDriver na versão estável...");
 
                 // Sem loops complexos, a conexão ocorre de primeira
-                desktopDriver = new WindowsDriver(new URL("http://127.0.0.1:4723"), caps);
+                desktopDriver = new WindowsDriver(new URL("http://127.0.0.1:4723"), options);
 
                 tipoDriverAtivo = "DESKTOP";
             } catch (Exception e) {
@@ -113,6 +113,39 @@ public class DriverManager {
             }
         }
         return desktopDriver;
+    }
+
+    public static void iniciarWinAppDriverAutomaticamente() {
+        if (processoWinAppDriver == null || !processoWinAppDriver.isAlive()) {
+            try {
+                try {
+                    new ProcessBuilder("cmd.exe", "/c", "taskkill /F /IM WinAppDriver.exe /IM node.exe").start().waitFor();
+                } catch (Exception e) {
+                    // Ignora se não houver processos órfãos
+                }
+
+                System.out.println("⏳ Iniciando WinAppDriver em segundo plano...");
+
+                ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "appium --log-level warn");
+                builder.inheritIO();
+
+                processoWinAppDriver = builder.start();
+                System.out.println("🤖 WinAppDriver pronto e invisível em background!");
+
+                // 🚀 O SEGREDO DA VELOCIDADE: Espera dinâmica da porta (Substitui o Thread.sleep fixo)
+                // O loop tenta se conectar na porta. Assim que o Appium绑定 nela, o Java avança!
+                for (int i = 0; i < 25; i++) {
+                    try (java.net.Socket socket = new java.net.Socket("127.0.0.1", 4723)) {
+                        System.out.println("✨ Servidor Appium respondeu! Prosseguindo...");
+                        break;
+                    } catch (Exception e) {
+                        Thread.sleep(200); // Aguarda um instante antes de tentar o próximo ping
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️ Falha ao iniciar WinAppDriver via código: " + e.getMessage());
+            }
+        }
     }
 
     public static void getApiDriver(String urlBase) {
@@ -128,11 +161,19 @@ public class DriverManager {
 
     public static void quitDrivers() {
         if (webDriver != null) {
-            try { webDriver.quit(); } catch (Exception e) { System.err.println(e.getMessage()); }
+            try {
+                webDriver.quit();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             webDriver = null;
         }
         if (desktopDriver != null) {
-            try { desktopDriver.quit(); } catch (Exception e) { System.err.println(e.getMessage()); }
+            try {
+                desktopDriver.quit();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             desktopDriver = null;
         }
         // Mata o processo do WinAppDriver no Windows para não deixar lixo na memória da máquina
@@ -142,32 +183,6 @@ public class DriverManager {
             System.out.println("🛑 Servidor WinAppDriver encerrado com sucesso.");
         }
         tipoDriverAtivo = "NENHUM";
-    }
-
-    public static void iniciarWinAppDriverAutomaticamente() {
-        if (processoWinAppDriver == null || !processoWinAppDriver.isAlive()) {
-            try {
-                System.out.println("⏳ Iniciando WinAppDriver em segundo plano...");
-
-                // Dispara o executável diretamente, sem abrir janelas de prompt (CMD)
-                ProcessBuilder builder = new ProcessBuilder(
-                        "C:\\Program Files (x86)\\Windows Application Driver\\WinAppDriver.exe",
-                        "127.0.0.1",
-                        "4723"
-                );
-
-                // Redireciona os logs para não travar a memória do Java
-                builder.redirectErrorStream(true);
-
-                // Inicia o processo de forma 100% invisível
-                processoWinAppDriver = builder.start();
-
-                System.out.println("🤖 WinAppDriver pronto e invisível em background!");
-                Thread.sleep(2000); // Pequena pausa para o servidor HTTP subir
-            } catch (Exception e) {
-                System.out.println("⚠️ Falha ao iniciar WinAppDriver via código: " + e.getMessage());
-            }
-        }
     }
 
     public static void fecharDesktopDriver() {
@@ -193,9 +208,10 @@ public class DriverManager {
 
         // Garantia extra: Taskkill via linha de comando para limpar fantasmas anteriores
         try {
-            new ProcessBuilder("cmd.exe", "/c", "taskkill /F /IM WinAppDriver.exe").start();
-        } catch (IOException e) {
-            // Ignora se não houver permissão, pois o destroyForcibly já deve ter resolvido
+            // 🎯 AJUSTE: Adicionado o '/IM node.exe' para limpar também o motor do Appium e o '.waitFor()' para dar tempo de limpar antes do double-check
+            new ProcessBuilder("cmd.exe", "/c", "taskkill /F /IM WinAppDriver.exe /IM node.exe").start().waitFor();
+        } catch (Exception e) {
+            // Ignora erros de permissão
         }
         // 3. O CHECK AUTOMÁTICO: O Java investiga o Windows para você
         verificarSeProcessoAindaExiste();

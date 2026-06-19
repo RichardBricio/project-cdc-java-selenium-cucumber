@@ -17,7 +17,7 @@ public class CommonSteps {
     @Dado("que estou utilizando o navegador {string}")
     public void queEstouUtilizandoONavegador(String navegadorSelecionado) throws InterruptedException {
         driver = DriverManager.getWebDriver(navegadorSelecionado);
-        TestUtils.logSucesso("Navegador " + navegadorSelecionado + "aberto com sucesso");
+        TestUtils.logSucesso("Navegador " + navegadorSelecionado + " aberto com sucesso");
     }
 
     @Dado("que estou na home page da Casa do Construtor")

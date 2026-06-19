@@ -17,15 +17,10 @@ import java.io.File;
         glue = {"steps"},
 //        tags = "@Web and (@CaminhoFeliz or @BuscaFiltros)",
         tags = "@CaminhoFeliz",
-//        plugin = { //Utiliza o Report Padrão do Cucumber
-//                "pretty",
-//                "html:target/cucumber-report.html",
-//                "json:target/cucumber-report.json",
-//                "rerun:target/rerun.txt"
-//        },
-        plugin = {
+        plugin = { //Utiliza o Report Padrão do Cucumber
                 "pretty",
-                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:",
+                "html:target/cucumber-report.html",
+                "json:target/cucumber-report.json",
                 "rerun:target/rerun.txt"
         },
         monochrome = true
@@ -48,7 +43,7 @@ public class WebTestRunner {
 
                 // Abre relatório automaticamente
                 try {
-                        File report = new File("target/extent-report/Index.html");
+                        File report = new File("target/cucumber-report.html");
                         if (report.exists() && Desktop.isDesktopSupported()) {
                                 Desktop.getDesktop().browse(report.toURI());
                                 System.out.println("\n📄 Novo relatório aberto automaticamente!");

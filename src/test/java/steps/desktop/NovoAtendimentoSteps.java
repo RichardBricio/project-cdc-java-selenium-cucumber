@@ -42,7 +42,7 @@ public class NovoAtendimentoSteps {
         // Inicializa o driver abrindo o app escolhido
         driver = DriverManager.getDesktopDriver(caminhoExe);
         notepadHome = new NotepadHome(driver);
-        Thread.sleep(2000);
+//        Thread.sleep(2000);
         TestUtils.screenshot("Abertura do aplicativo realizado com sucesso!");
     }
 
